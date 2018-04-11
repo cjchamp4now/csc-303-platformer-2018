@@ -1,14 +1,12 @@
 package environment;
 
 import flixel.FlxSprite;
-import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 
 /**
- * Simple sprite used for ground and / or walls for the PlatformerHero.
- * @author Samuel Bumgardner
+ * Simple extension of FlxSprite used for solid platforms and walls.
  */
-class Ground extends FlxSprite
+class Ground extends FlxSprite 
 {
 	public static var LENGTH(default, never):Int = 32;
 	public static var HEIGHT(default, never):Int = 32;
@@ -16,6 +14,7 @@ class Ground extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0) {
 		super(X, Y);
 		makeGraphic(LENGTH, HEIGHT, FlxColor.GRAY);
+		set_immovable(true);
 	}
 	
 }
