@@ -9,10 +9,7 @@ import player.fsm.PlayerState;
  * @author Samuel Bumgardner
  */
 class RunState extends PlayerState
-{
-
-	private var direction:Int = 0;
-	
+{	
 	public function new(hero:Player) 
 	{
 		super(hero);
@@ -28,24 +25,23 @@ class RunState extends PlayerState
 			return PlayerStates.CROUCH;
 		}
 		
-		var horizontalInput:Int = 0;
+		var direction:Int = 0;
 		if (input.leftPressed) {
-			horizontalInput--;
+			direction = direction | FlxObject.LEFT;
 		}
 		if (input.rightPressed) {
-			horizontalInput++;
+			direction = direction | FlxObject.RIGHT;
 		}
 		
-		if (horizontalInput == 0) {
+		if (direction == 0 || direction == FlxObject.LEFT | FlxObject.RIGHT) {
+			managedHero.animation.play(Player.SKID_ANIMATION);
 			return PlayerStates.STAND;
 		} 
-		else {
-			direction = horizontalInput;
-			this.managedHero.facing = direction;
-		}
-		
-		if (this.managedHero.isTouching(FlxObject.LEFT) || this.managedHero.isTouching(FlxObject.RIGHT)){
-			return PlayerStates.CLIMB;
+		else {			
+			if (direction != this.managedHero.facing) {
+				this.managedHero.facing = direction;
+				this.managedHero.flipX = this.managedHero.facing == FlxObject.LEFT;
+			}
 		}
 		
 		return PlayerStates.NO_CHANGE;
@@ -53,12 +49,13 @@ class RunState extends PlayerState
 	
 	override public function update():Void 
 	{
-		this.managedHero.velocity.x = Player.MAX_RUN_SPEED * direction;
+		this.managedHero.velocity.x = Player.MAX_RUN_SPEED * (this.managedHero.facing == FlxObject.RIGHT ? 1 : -1);
 	}
 	
 	override public function transitionIn():Void 
 	{
 		this.managedHero.color = FlxColor.BLUE;
+		this.managedHero.animation.play(Player.RUN_ANIMATION, false);
 	}
 	
 	override public function transitionOut():Void 

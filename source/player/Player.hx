@@ -20,9 +20,12 @@ import player.fsm.states.DoubleJumpState;
  */
 class Player extends FlxSprite
 {
-	public static var LENGTH(default, never):Int = 32;
-	public static var HEIGHT(default, never):Int = 64;
-	public static var CROUCH_HEIGHT(default, never):Float = 32;
+	public static var LENGTH(default, never):Int = 8;
+	public static var HEIGHT(default, never):Int = 28;
+	public static var CROUCH_HEIGHT(default, never):Float = 16;
+	
+	public static var OFFSET_X(default, never):Int = 20;
+	public static var OFFSET_Y(default, never):Int = 20;
 	
 	public static var MAX_RUN_SPEED(default, never):Float = 200;
 	public static var MAX_Y_SPEED(default, never):Float = 350;
@@ -30,24 +33,41 @@ class Player extends FlxSprite
 	public static var GRAVITY(default, never):Float = 400;
 	public static var STANDING_DECELERATION(default, never):Float = 500;
 	public static var CROUCHING_DECELERATION(default, never):Float = 200;
+	  
+	public static var STAND_ANIMATION(default, never):String = "stand";
+	public static var RUN_ANIMATION(default, never):String = "run";
+	public static var SKID_ANIMATION(default, never):String = "skid";
+	public static var CROUCH_ANIMATION(default, never):String = "crouch";
+	public static var RISING_AIR_ANIMATION(default, never):String = "risingAir";
+	public static var FALLING_AIR_ANIMATION(default, never):String = "fallingAir";
 	
-	private var states:Vector<State> = new Vector<State>(8);
-  
 	private var state:State;
+	private var states:Vector<State> = new Vector<State>(8);
+
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
-		makeGraphic(LENGTH, HEIGHT);
 		acceleration.y = GRAVITY;
 		maxVelocity.set(MAX_RUN_SPEED, MAX_Y_SPEED);
+		
+		loadGraphic(AssetPaths.HeroSpritesheet__png, true, 48, 48);
+		offset.set(OFFSET_X, OFFSET_Y);
+		width = LENGTH;
+		height = HEIGHT;
+		
+		animation.add(STAND_ANIMATION, [0], 1, false);
+		animation.add(RUN_ANIMATION, [1, 2, 3, 1, 4, 5], 10);
+		animation.add(SKID_ANIMATION, [6, 7, 7, 8], 8, false);
+		animation.play(STAND_ANIMATION);
+		
 		
 		states[PlayerStates.STAND] = new StandState(this);
 		states[PlayerStates.RUN] = new RunState(this);
 		states[PlayerStates.JUMP] = new JumpState(this);
 		states[PlayerStates.CROUCH] = new CrouchState(this);
 		states[PlayerStates.SLIDEDASH] = new SlideDashState(this);
-    states[PlayerStates.CLIMB] = new ClimbState(this);
+		states[PlayerStates.CLIMB] = new ClimbState(this);
 		states[PlayerStates.DOUBLE] = new DoubleJumpState(this);
 		
 		state = states[PlayerStates.STAND];

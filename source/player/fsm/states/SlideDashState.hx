@@ -1,5 +1,6 @@
 package player.fsm.states;
 
+import flixel.FlxObject;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import player.fsm.PlayerState;
@@ -51,7 +52,7 @@ class SlideDashState extends PlayerState
 		
 		this.managedHero.drag.x = Player.CROUCHING_DECELERATION;
 		
-		this.managedHero.velocity.x = Player.MAX_RUN_SPEED * this.managedHero.facing;
+		this.managedHero.velocity.x = Player.MAX_RUN_SPEED * (this.managedHero.facing == FlxObject.RIGHT ? 1 : -1);
 		
 		slideTime = Sys.time() + .5;
 		

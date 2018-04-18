@@ -42,13 +42,22 @@ class StandState extends PlayerState
 	
 	override public function update():Void 
 	{
-		// Do nothing when standing still.
+		if (this.managedHero.animation.finished 
+				&& this.managedHero.animation.curAnim.name != Player.STAND_ANIMATION) {
+			
+			this.managedHero.animation.play(Player.STAND_ANIMATION);
+		}
+
 	}
 	
 	override public function transitionIn():Void 
 	{
 		this.managedHero.color = FlxColor.ORANGE;
 		this.managedHero.drag.x = Player.STANDING_DECELERATION;
+		
+		if (this.managedHero.animation.finished) {
+			this.managedHero.animation.play(Player.STAND_ANIMATION);
+		}
 	}
 	
 	override public function transitionOut():Void 
