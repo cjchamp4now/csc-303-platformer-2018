@@ -7,6 +7,7 @@ import haxe.ds.Vector;
 import player.fsm.PlayerStates;
 import player.fsm.State;
 import player.fsm.states.CrouchState;
+import player.fsm.states.FallState;
 import player.fsm.states.JumpState;
 import player.fsm.states.RunState;
 import player.fsm.states.StandState;
@@ -27,12 +28,9 @@ class Player extends FlxSprite
 	public static var OFFSET_X(default, never):Int = 20;
 	public static var OFFSET_Y(default, never):Int = 20;
 	
-	public static var MAX_RUN_SPEED(default, never):Float = 200;
-	public static var MAX_Y_SPEED(default, never):Float = 350;
-	public static var JUMP_VELOCITY(default, never):Float = -350;
-	public static var GRAVITY(default, never):Float = 400;
-	public static var STANDING_DECELERATION(default, never):Float = 500;
-	public static var CROUCHING_DECELERATION(default, never):Float = 200;
+	public static var MAX_RUN_SPEED(default, never):Float = 150;
+	public static var STANDING_DECELERATION(default, never):Float = 700;
+	public static var CROUCHING_DECELERATION(default, never):Float = 1200;
 	  
 	public static var STAND_ANIMATION(default, never):String = "stand";
 	public static var RUN_ANIMATION(default, never):String = "run";
@@ -44,6 +42,13 @@ class Player extends FlxSprite
 	private var state:State;
 	private var states:Vector<State> = new Vector<State>(8);
 
+	public static var AIR_HEIGHT_DECREASE(default, never):Float = 8;
+	public static var JUMP_VELOCITY(default, never):Float = -200;
+	public static var DOUBLE_JUMP_VELOCITY(default, never):Float = -200;
+	public static var MAX_Y_SPEED(default, never):Float = 300;
+	public static var GRAVITY(default, never):Float = 400 ;
+	public static var MAX_AIR_JUMPS = 1;
+	public var remainingAirJumps:Int = MAX_AIR_JUMPS;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -59,16 +64,18 @@ class Player extends FlxSprite
 		animation.add(STAND_ANIMATION, [0], 1, false);
 		animation.add(RUN_ANIMATION, [1, 2, 3, 1, 4, 5], 10);
 		animation.add(SKID_ANIMATION, [6, 7, 7, 8], 8, false);
+		animation.add(CROUCH_ANIMATION, [17, 18], 8, false);
+		animation.add(RISING_AIR_ANIMATION, [19, 20], 8, false);
+		animation.add(FALLING_AIR_ANIMATION, [21, 22, 23], 6, false);
 		animation.play(STAND_ANIMATION);
 		
 		
 		states[PlayerStates.STAND] = new StandState(this);
 		states[PlayerStates.RUN] = new RunState(this);
 		states[PlayerStates.JUMP] = new JumpState(this);
-		states[PlayerStates.CROUCH] = new CrouchState(this);
-		states[PlayerStates.SLIDEDASH] = new SlideDashState(this);
-		states[PlayerStates.CLIMB] = new ClimbState(this);
 		states[PlayerStates.DOUBLE] = new DoubleJumpState(this);
+		states[PlayerStates.FALL] = new FallState(this);
+		states[PlayerStates.CROUCH] = new CrouchState(this);
 		
 		state = states[PlayerStates.STAND];
 		state.transitionIn();

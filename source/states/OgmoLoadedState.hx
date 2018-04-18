@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
@@ -18,10 +19,16 @@ class OgmoLoadedState extends FlxState
 	private var map:FlxTilemap;
 	
 	override public function create():Void {
-		super.create();
 		instantiateEntities();
 		setUpLevel();
 		addAll();
+		
+		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER, 1);
+		FlxG.camera.zoom = 2;
+		
+		FlxG.sound.playMusic(AssetPaths.rightHandMate_v8__wav);
+		
+		super.create();
 	}
 	
 	/**

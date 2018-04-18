@@ -1,6 +1,7 @@
 package states;
 
 import environment.Ground;
+import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -23,9 +24,15 @@ class PlayState extends FlxState
 	private var groundGroup:FlxTypedGroup<Ground>;
 	
 	override public function create():Void {
-		super.create();
 		instantiateEntities();
 		addEntities();
+		
+		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER, 1);
+		FlxG.camera.zoom = 2;
+		
+		FlxG.sound.playMusic(AssetPaths.closeStars_v6__wav);
+		
+		super.create();
 	}
 	
 	/**

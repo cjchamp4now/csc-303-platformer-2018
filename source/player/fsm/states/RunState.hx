@@ -8,8 +8,10 @@ import player.fsm.PlayerState;
  * State for when the player is moving horizontally along the ground.
  * @author Samuel Bumgardner
  */
-class RunState extends PlayerState
+class RunState extends GroundState
 {	
+	private var movementDirection:Int = 0;
+	
 	public function new(hero:Player) 
 	{
 		super(hero);
@@ -25,31 +27,32 @@ class RunState extends PlayerState
 			return PlayerStates.CROUCH;
 		}
 		
-		var direction:Int = 0;
+		this.movementDirection = 0;
 		if (input.leftPressed) {
-			direction = direction | FlxObject.LEFT;
+			this.movementDirection--;
 		}
 		if (input.rightPressed) {
-			direction = direction | FlxObject.RIGHT;
+			this.movementDirection++;
 		}
 		
-		if (direction == 0 || direction == FlxObject.LEFT | FlxObject.RIGHT) {
+		if (movementDirection == 0) {
 			managedHero.animation.play(Player.SKID_ANIMATION);
 			return PlayerStates.STAND;
 		} 
 		else {			
-			if (direction != this.managedHero.facing) {
-				this.managedHero.facing = direction;
+			if (movementDirection == 1 && this.managedHero.facing == FlxObject.LEFT
+					|| movementDirection == -1 && this.managedHero.facing == FlxObject.RIGHT) {
+				this.managedHero.facing = movementDirection == -1 ? FlxObject.LEFT : FlxObject.RIGHT;
 				this.managedHero.flipX = this.managedHero.facing == FlxObject.LEFT;
 			}
 		}
 		
-		return PlayerStates.NO_CHANGE;
+		return super.handleInput(input);
 	}
 	
 	override public function update():Void 
 	{
-		this.managedHero.velocity.x = Player.MAX_RUN_SPEED * (this.managedHero.facing == FlxObject.RIGHT ? 1 : -1);
+		this.managedHero.velocity.x = Player.MAX_RUN_SPEED * movementDirection;
 	}
 	
 	override public function transitionIn():Void 

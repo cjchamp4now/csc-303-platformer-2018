@@ -9,7 +9,7 @@ import player.fsm.PlayerState;
  * State for when the player initates a jump.
  * @author Samuel Bumgardner
  */
-class JumpState extends PlayerState
+class JumpState extends AirState
 {
 
 	public function new(hero:Player) 
@@ -18,35 +18,29 @@ class JumpState extends PlayerState
 	}
 	
 	override public function handleInput(input:Input):Int 
-	{
-		if (this.managedHero.isTouching(FlxObject.DOWN) && managedHero.velocity.y >= 0) {
-			return PlayerStates.STAND;
+	{		
+		if (FlxG.keys.justReleased.SPACE || managedHero.velocity.y >= 0) {
+			return PlayerStates.FALL;
 		}
 		
-		if (this.managedHero.isTouching(FlxObject.LEFT) || this.managedHero.isTouching(FlxObject.RIGHT)){
-			return PlayerStates.CLIMB;
-		}
-		if (FlxG.keys.justPressed.SPACE && !this.managedHero.isTouching(FlxObject.DOWN)){
-			return PlayerStates.DOUBLE;
-		}
-		
-		return PlayerStates.NO_CHANGE;
-	}
-	
-	override public function update():Void 
-	{
-		
+		return super.handleInput(input);
 	}
 	
 	override public function transitionIn():Void 
-	{
+	{		
 		this.managedHero.color = FlxColor.PURPLE;
 		this.managedHero.velocity.y = Player.JUMP_VELOCITY;
+		
+		this.managedHero.animation.play(Player.RISING_AIR_ANIMATION);
+		FlxG.sound.play(AssetPaths.jump_start__wav, .5);
 	}
 	
 	override public function transitionOut():Void 
 	{
 		this.managedHero.color = FlxColor.WHITE;
+		
+		if (this.managedHero.animation.name == Player.RISING_AIR_ANIMATION) {
+			this.managedHero.animation.stop();
+		}
 	}
-	
 }

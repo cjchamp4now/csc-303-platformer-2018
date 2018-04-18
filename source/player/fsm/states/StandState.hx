@@ -7,7 +7,7 @@ import player.fsm.PlayerState;
  * State for when the player is not moving or taking any other action.
  * @author Samuel Bumgardner
  */
-class StandState extends PlayerState
+class StandState extends GroundState
 {
 
 	public function new(hero:Player) 
@@ -37,7 +37,7 @@ class StandState extends PlayerState
 			return PlayerStates.RUN;
 		} 
 		
-		return PlayerStates.NO_CHANGE;
+		return super.handleInput(input);
 	}
 	
 	override public function update():Void 
@@ -52,6 +52,8 @@ class StandState extends PlayerState
 	
 	override public function transitionIn():Void 
 	{
+		this.managedHero.remainingAirJumps = Player.MAX_AIR_JUMPS;
+		
 		this.managedHero.color = FlxColor.ORANGE;
 		this.managedHero.drag.x = Player.STANDING_DECELERATION;
 		

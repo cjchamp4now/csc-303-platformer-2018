@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.tile.FlxTilemap;
@@ -19,10 +20,16 @@ class ArrayLoadedState extends FlxState
 	private var map:FlxTilemap;
 	
 	override public function create():Void {
-		super.create();
 		instantiateEntities();
 		instantiateMap();
 		addAll();
+		
+		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER, 1);
+		FlxG.camera.zoom = 2;
+		
+		FlxG.sound.playMusic(AssetPaths.spinDance_v3__wav);
+		
+		super.create();
 	}
 	
 	/**

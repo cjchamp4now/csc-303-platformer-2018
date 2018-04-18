@@ -8,10 +8,8 @@ import player.fsm.PlayerState;
  * State for when the player is ducking. Also allows sliding. Fun!
  * @author Samuel Bumgardner
  */
-class CrouchState extends PlayerState
+class CrouchState extends GroundState
 {
-	private static var topHalfOfGraphicRect(default, never) = new FlxRect(0, 0, 32, 32);
-	
 	public function new(hero:Player) 
 	{
 		super(hero);
@@ -21,26 +19,12 @@ class CrouchState extends PlayerState
 	{
 		
 		var horizontalInput:Int = 0;
-		if (input.leftPressed) {
-			horizontalInput--;
-		}
-		if (input.rightPressed) {
-			horizontalInput++;
-		}
-		
-		if (horizontalInput != 0) {
-			this.managedHero.facing = horizontalInput;
-		}
-		
-		if (input.jumpJustPressed) {
-			return PlayerStates.SLIDEDASH;
-		}
 		
 		if (!input.downPressed) {
 			return PlayerStates.STAND;
 		}
 		
-		return PlayerStates.NO_CHANGE;
+		return super.handleInput(input);
 	}
 	
 	override public function update():Void {}
@@ -50,10 +34,12 @@ class CrouchState extends PlayerState
 		this.managedHero.color = FlxColor.RED;
 		
 		this.managedHero.height = Player.CROUCH_HEIGHT;
-		this.managedHero.clipRect = topHalfOfGraphicRect;
 		this.managedHero.y += Player.HEIGHT - Player.CROUCH_HEIGHT;
+		this.managedHero.offset.y += Player.HEIGHT - Player.CROUCH_HEIGHT;
 		
 		this.managedHero.drag.x = Player.CROUCHING_DECELERATION;
+		
+		this.managedHero.animation.play(Player.CROUCH_ANIMATION);
 	}
 	
 	override public function transitionOut():Void 
@@ -61,10 +47,14 @@ class CrouchState extends PlayerState
 		this.managedHero.color = FlxColor.WHITE;
 		
 		this.managedHero.height = Player.HEIGHT;
-		this.managedHero.clipRect = null;
 		this.managedHero.y -= Player.HEIGHT - Player.CROUCH_HEIGHT;
+		this.managedHero.offset.y -= Player.HEIGHT - Player.CROUCH_HEIGHT;
 		
 		this.managedHero.drag.x = 0;
+		
+		if (this.managedHero.animation.name == Player.CROUCH_ANIMATION) {
+			this.managedHero.animation.stop();
+		}
 	}
 	
 }
