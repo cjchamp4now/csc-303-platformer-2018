@@ -54,7 +54,6 @@ class StandState extends GroundState
 	{
 		this.managedHero.remainingAirJumps = Player.MAX_AIR_JUMPS;
 		
-		this.managedHero.color = FlxColor.ORANGE;
 		this.managedHero.drag.x = Player.STANDING_DECELERATION;
 		
 		if (this.managedHero.animation.finished) {
@@ -64,7 +63,6 @@ class StandState extends GroundState
 	
 	override public function transitionOut():Void 
 	{
-		this.managedHero.color = FlxColor.WHITE;
 		this.managedHero.drag.x = 0;
 	}
 	

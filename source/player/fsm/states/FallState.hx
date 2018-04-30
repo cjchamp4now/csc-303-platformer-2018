@@ -33,15 +33,12 @@ class FallState extends AirState
 		if (managedHero.velocity.y < 0) {
 			managedHero.velocity.y = 0;
 		}
-		this.managedHero.color = this.managedHero.color = FlxColor.YELLOW;
 		
 		this.managedHero.animation.play(Player.FALLING_AIR_ANIMATION);
 	}
 	
 	override public function transitionOut():Void 
-	{
-		this.managedHero.color = FlxColor.WHITE;
-		
+	{		
 		if (this.managedHero.animation.name == Player.FALLING_AIR_ANIMATION) {
 			this.managedHero.animation.stop();
 		}

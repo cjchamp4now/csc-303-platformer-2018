@@ -28,7 +28,6 @@ class JumpState extends AirState
 	
 	override public function transitionIn():Void 
 	{		
-		this.managedHero.color = FlxColor.PURPLE;
 		this.managedHero.velocity.y = Player.JUMP_VELOCITY;
 		
 		this.managedHero.animation.play(Player.RISING_AIR_ANIMATION);
@@ -36,9 +35,7 @@ class JumpState extends AirState
 	}
 	
 	override public function transitionOut():Void 
-	{
-		this.managedHero.color = FlxColor.WHITE;
-		
+	{		
 		if (this.managedHero.animation.name == Player.RISING_AIR_ANIMATION) {
 			this.managedHero.animation.stop();
 		}

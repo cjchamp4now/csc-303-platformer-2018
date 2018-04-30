@@ -30,9 +30,7 @@ class CrouchState extends GroundState
 	override public function update():Void {}
 	
 	override public function transitionIn():Void 
-	{
-		this.managedHero.color = FlxColor.RED;
-		
+	{		
 		this.managedHero.height = Player.CROUCH_HEIGHT;
 		this.managedHero.y += Player.HEIGHT - Player.CROUCH_HEIGHT;
 		this.managedHero.offset.y += Player.HEIGHT - Player.CROUCH_HEIGHT;
@@ -43,9 +41,7 @@ class CrouchState extends GroundState
 	}
 	
 	override public function transitionOut():Void 
-	{
-		this.managedHero.color = FlxColor.WHITE;
-		
+	{		
 		this.managedHero.height = Player.HEIGHT;
 		this.managedHero.y -= Player.HEIGHT - Player.CROUCH_HEIGHT;
 		this.managedHero.offset.y -= Player.HEIGHT - Player.CROUCH_HEIGHT;

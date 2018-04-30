@@ -57,13 +57,6 @@ class RunState extends GroundState
 	
 	override public function transitionIn():Void 
 	{
-		this.managedHero.color = FlxColor.BLUE;
 		this.managedHero.animation.play(Player.RUN_ANIMATION, false);
 	}
-	
-	override public function transitionOut():Void 
-	{
-		this.managedHero.color = FlxColor.WHITE;
-	}
-	
 }

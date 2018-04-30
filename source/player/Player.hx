@@ -12,7 +12,6 @@ import player.fsm.states.JumpState;
 import player.fsm.states.RunState;
 import player.fsm.states.StandState;
 import player.fsm.states.SlideDashState;
-import player.fsm.states.ClimbState;
 import player.fsm.states.DoubleJumpState;
 
 /**
@@ -40,7 +39,7 @@ class Player extends FlxSprite
 	public static var FALLING_AIR_ANIMATION(default, never):String = "fallingAir";
 	
 	private var state:State;
-	private var states:Vector<State> = new Vector<State>(8);
+	private var states:Vector<State> = new Vector<State>(6);
 
 	public static var AIR_HEIGHT_DECREASE(default, never):Float = 8;
 	public static var JUMP_VELOCITY(default, never):Float = -200;
