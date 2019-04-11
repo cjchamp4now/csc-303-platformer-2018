@@ -23,6 +23,10 @@ class FallState extends AirState
 		if (FlxG.keys.justPressed.SPACE && this.managedHero.remainingAirJumps > 0){
 			this.managedHero.remainingAirJumps--;
 			return PlayerStates.DOUBLE;
+		} else if (input.dashJustPressed && this.managedHero.remainingAirJumps > 0){
+			trace("fall");
+			this.managedHero.remainingAirJumps--;
+			return PlayerStates.AIRDASH;
 		}
 		
 		return super.handleInput(input);

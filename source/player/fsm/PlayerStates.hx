@@ -13,6 +13,7 @@ class PlayerStates
 	public static var DOUBLE(default, never):Int = 3;
 	public static var FALL(default, never):Int = 4;
 	public static var CROUCH(default, never):Int = 5;
+	public static var AIRDASH(default, never):Int = 6;
 	// Commented out this state for for now so everything has animations.
 	// public static var SLIDEDASH(default, never):Int = 6;
 }

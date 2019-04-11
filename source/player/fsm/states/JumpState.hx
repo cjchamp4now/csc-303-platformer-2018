@@ -4,6 +4,7 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import player.fsm.PlayerState;
+import player.Input;
 
 /**
  * State for when the player initates a jump.
@@ -21,6 +22,9 @@ class JumpState extends AirState
 	{		
 		if (FlxG.keys.justReleased.SPACE || managedHero.velocity.y >= 0) {
 			return PlayerStates.FALL;
+		} else if (input.dashJustPressed && this.managedHero.remainingAirJumps > 0){
+			this.managedHero.remainingAirJumps--;
+			return PlayerStates.AIRDASH;
 		}
 		
 		return super.handleInput(input);

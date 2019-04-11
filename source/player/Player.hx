@@ -13,6 +13,7 @@ import player.fsm.states.RunState;
 import player.fsm.states.StandState;
 import player.fsm.states.SlideDashState;
 import player.fsm.states.DoubleJumpState;
+import source.player.fsm.states.AirDash;
 
 /**
  * Base hero class that player-controlled objects should descend from.
@@ -39,7 +40,7 @@ class Player extends FlxSprite
 	public static var FALLING_AIR_ANIMATION(default, never):String = "fallingAir";
 	
 	private var state:State;
-	private var states:Vector<State> = new Vector<State>(6);
+	private var states:Vector<State> = new Vector<State>(7);
 
 	public static var AIR_HEIGHT_DECREASE(default, never):Float = 8;
 	public static var JUMP_VELOCITY(default, never):Float = -200;
@@ -75,6 +76,7 @@ class Player extends FlxSprite
 		states[PlayerStates.DOUBLE] = new DoubleJumpState(this);
 		states[PlayerStates.FALL] = new FallState(this);
 		states[PlayerStates.CROUCH] = new CrouchState(this);
+		states[PlayerStates.AIRDASH] = new AirDash(this);
 		
 		state = states[PlayerStates.STAND];
 		state.transitionIn();
@@ -91,16 +93,19 @@ class Player extends FlxSprite
 		input.rightJustPressed = FlxG.keys.justPressed.RIGHT;
 		input.downJustPressed = FlxG.keys.justPressed.DOWN;
 		input.jumpJustPressed = FlxG.keys.justPressed.SPACE;
+		input.dashJustPressed = FlxG.keys.justPressed.F;
 		
 		input.leftPressed = FlxG.keys.pressed.LEFT;
 		input.rightPressed = FlxG.keys.pressed.RIGHT;
 		input.downPressed = FlxG.keys.pressed.DOWN;
 		input.jumpPressed = FlxG.keys.pressed.SPACE;
+		input.dashPressed = FlxG.keys.pressed.F;
 		
 		input.leftJustReleased = FlxG.keys.justReleased.LEFT;
 		input.rightJustReleased = FlxG.keys.justReleased.RIGHT;
 		input.downJustReleased = FlxG.keys.justReleased.DOWN;
 		input.jumpJustReleased = FlxG.keys.justReleased.SPACE;
+		input.dashJustReleased = FlxG.keys.justReleased.F;
 		
 		return input;
 	}
